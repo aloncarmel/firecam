@@ -15,47 +15,29 @@
     <script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
 
 
-    <script src="firecam.js"></script>
-
-
-  </head>
-  <body>
-
-        Broadcasting live feed to #<span id="broadcastidspan"></span><br>
-        <a href="" target="_blank" id="braodcastlink">Watch your video here as a watcher</a><br>
-        <video id="video"></video>
-
-
-        <!-- target for the canvas-->
-        <div id="canvasHolder"></div>
-
-
+    <script src="/v2/firecam.js"></script>
 
     <script>
 
         $(document).ready(function(){
 
+          document.broadcast = new FireCam('video')
 
-          document.broadcastinit = FireCam.getUrlParameter('c');
+          document.broadcast.startBroadcasting()
 
-          if(!document.broadcastinit) {
-
-            var broadcastinit =  Math.floor((Math.random() * 9999) + 9999);
-
-            window.location = "?c="+broadcastinit;
-
-          } else {
-
-            $('#braodcastlink').attr('href','watcher.html?c='+document.broadcastinit);
-            FireCam.broadcast();
-
-          }
-
+          $("#braodcastlink").text(document.broadcast.getWatchLink())
         });
-
-
 
     </script>
 
+  </head>
+  <body>
+
+        <pre>copy this into your watcher page url <code id="braodcastlink"></code></pre>
+        <video id="video"></video>
+
+
+        <!-- target for the canvas-->
+        <div id="canvasHolder"></div>
   </body>
 </html>

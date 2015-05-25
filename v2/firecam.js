@@ -1,17 +1,22 @@
-var FireCam = function(elm) {
+var FireCam = function(elmId) {
 
-  var videoElm = elm
-  var paramName = "fcbid"
-  var broadcastId = null
-  var mediaHandler = null
-  var fireBaseConnection = null
+  var videoElm;
+  var paramName;
+  var broadcastId = null;
+  var mediaHandler = null;
+  var fireBaseConnection = null;
   var that = this;
+  var ready = false;
 
-  this.init = function() {
+  this.init = function(elmId) {
 
-    if (!videoElm) {
+    that.paramName = "fcbid";
+    that.videoElm = document.getElementById(elmId)
+
+    if (that.videoElm == undefined) {
       console.error("You must specifiy an HTML5 video element")
     } else {
+      that.ready = true
       that.broadcastId = that.getUrlParameter(that.paramName)
 
       if (!that.broadcastId) {
@@ -36,14 +41,26 @@ var FireCam = function(elm) {
     if (!that.mediaHandler) {
       console.error("Unsupported browser, sorry!")
     } else {
+      that.createCanvas()
+      that.mediaHandler = that.mediaHandler.bind(navigator)
       that.mediaHandler({ video: true }, that.onConnect, that.onError);
       setInterval(function() { that.stream() },300);
     }
   }
 
+  that.createCanvas = function() {
+    var canvas = document.createElement('canvas');
+    canvas.id = "firecam_canvas_" + that.broadcastId;
+
+    //add canvas to the body element
+    document.body.appendChild(canvas);
+
+  }
+
   this.onConnect = function(stream) {
-    that.videoElm.src = window.URL ? window.URL.createObjectURL(stream) : stream;
-    that.videoElm.play();
+
+    that.getVideoElm().src = window.URL ? window.URL.createObjectURL(stream) : stream;
+    that.getVideoElm().play();
   }
 
   this.onError = function(e) {
@@ -52,17 +69,13 @@ var FireCam = function(elm) {
   }
 
   this.sampleVideo = function() {
-    var canvas = document.createElement('canvas');
-    canvas.id = 'hiddenCanvas';
 
-    //add canvas to the body element
-    document.body.appendChild(canvas);
-
+    var canvas = document.getElementById("firecam_canvas_" + that.broadcastId)
     //add canvas to #canvasHolder
-    document.getElementById('canvasHolder').appendChild(canvas);
+    // document.getElementById('canvasHolder').appendChild(canvas);
     var ctx = canvas.getContext('2d');
-    canvas.width = 640;
-    canvas.height = 480;
+    canvas.width = 600;
+    canvas.height = 600;
     ctx.drawImage(that.videoElm, 0, 0, canvas.width, canvas.height);
 
     //save canvas image as data url
@@ -71,11 +84,20 @@ var FireCam = function(elm) {
     return dataURL;
   }
 
-  that.startBroadcasting = function() {
-    that.setupVideo()
+  this.startBroadcasting = function() {
+
+    if (that.ready == true ) {
+      that.setupVideo()
+    }
+
   }
 
-  that.stream = function() {
+  this.getWatchLink = function () {
+
+    return window.location.href + "?" + that.paramName + "=" + that.broadcastId
+  }
+
+  this.stream = function() {
     var imagebase = that.sampleVideo()
 
     that.fireBaseConnection.update({base64:imagebase});
@@ -108,6 +130,9 @@ var FireCam = function(elm) {
     }
   }
 
+  this.getVideoElm = function() {
+    return that.videoElm
+  }
   this.getBroadcastId = function() {
     return that.broadcastId
   }
@@ -115,5 +140,5 @@ var FireCam = function(elm) {
     return Math.random().toString(36).substring(2);
   }
 
-  this.init()
+  this.init(elmId);
 }
