@@ -22,7 +22,7 @@
   <body>
 
         Broadcasting live feed to #<span id="broadcastidspan"></span><br>
-
+        <a href="" target="_blank" id="braodcastlink">Watch your video here as a watcher</a><br>
         <video id="video"></video>
 
 
@@ -45,6 +45,8 @@
             window.location = "?c="+broadcastinit;
 
           } else {
+
+            $('#braodcastlink').attr('href','watcher.html?c='+document.broadcastinit);
             FireCam.broadcast();
 
           }
