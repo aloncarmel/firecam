@@ -1,0 +1,62 @@
+
+<html>
+  <head>
+    <title>FireCamera example</title>
+
+    <style>
+        body{font-family:Sans-Serif;}
+        canvas{position:absolute; left: -9999em;}
+        #imageToForm{width:100%;}
+        #preview{margin: 20px 0;}
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
+
+  </head>
+  <body>
+        Watching live feed #<span id="broadcastidspan"></span><br>
+        <img id="preview" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-hi.png" width="640" height="480" />
+
+        <script>
+
+        function getBroadcast() {
+
+          var myFirebaseRef = new Firebase("https://firecamera.firebaseio.com/c/"+document.broadcastinit);
+
+          myFirebaseRef.on("value", function(snapshot) {
+
+              var data = snapshot.val();
+              document.getElementById('preview').src = data.base64;
+              document.getElementById('broadcastidspan').innerHTML = document.broadcastinit;
+          });
+        }
+
+        function getUrlParameter(sParam)
+        {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+        $(document).ready(function(){
+
+          document.broadcastinit = getUrlParameter('c');
+
+          getBroadcast();
+
+        });
+
+        </script>
+
+</body>
+
+</html>
