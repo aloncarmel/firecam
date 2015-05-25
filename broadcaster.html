@@ -1,0 +1,59 @@
+
+<html>
+  <head>
+    <title>FireCamera example</title>
+
+    <style>
+        body{font-family:Sans-Serif;}
+        canvas{position:absolute; left: -9999em;}
+        #imageToForm{width:100%;}
+        #preview{margin: 20px 0;}
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
+
+
+    <script src="firecam.js"></script>
+
+
+  </head>
+  <body>
+
+        Broadcasting live feed to #<span id="broadcastidspan"></span><br>
+
+        <video id="video"></video>
+
+
+        <!-- target for the canvas-->
+        <div id="canvasHolder"></div>
+
+
+
+    <script>
+
+        $(document).ready(function(){
+
+
+          document.broadcastinit = FireCam.getUrlParameter('c');
+
+          if(!document.broadcastinit) {
+
+            var broadcastinit =  Math.floor((Math.random() * 9999) + 9999);
+
+            window.location = "?c="+broadcastinit;
+
+          } else {
+            FireCam.broadcast();
+
+          }
+
+        });
+
+
+
+    </script>
+
+  </body>
+</html>
