@@ -4,6 +4,10 @@ The script mainly takes a canvas html5 base64 string and broadcasts it to fireba
 
 ![screen shot 2015-05-25 at 2 31 08 pm](https://cloud.githubusercontent.com/assets/912405/7796904/440df3ac-02ed-11e5-853b-e2fc47e71c8c.png)
 
+
+You can try out a demo for broadcasting here: https://s3-us-west-2.amazonaws.com/firecam/broadcaster.html
+Grab the generated id and put it here:  https://s3-us-west-2.amazonaws.com/firecam/watcher.html?c=ID
+
 # firecam.js
 Simple library for implementing video broadcasting over firebase.
 
