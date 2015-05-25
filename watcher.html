@@ -14,11 +14,11 @@
 
     <script src="https://cdn.firebase.com/js/client/2.2.5/firebase.js"></script>
 
-    <script src="firecam.js"></script>
+    <script src="/v2/firecam.js"></script>
 
   </head>
   <body>
-        Watching live feed #<span id="broadcastidspan"></span><br>
+
         <img id="preview" src="http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-hi.png" width="640" height="480" />
 
         <script>
@@ -26,8 +26,8 @@
         $(document).ready(function(){
 
 
-          document.broadcastinit = FireCam.getUrlParameter('c');
-          FireCam.watch('preview');
+          var braodcast = new FireCam('preview')
+          braodcast.watch();
 
         });
 
